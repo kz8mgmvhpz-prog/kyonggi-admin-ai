@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="경기대학교 학생들을 위한 무중력(Anti-Gravity) 감각의 스마트 AI 행정 정보 안내 서비스">
+  <title>경기대학교 스마트 행정 AI - Anti-Gravity UX</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+  <!-- 1. 무중력 대기 캔버스 (Aura Lights) -->
+  <div class="aura-container" aria-hidden="true">
+    <div class="aura-orb aura-orb-blue"></div>
+    <div class="aura-orb aura-orb-purple"></div>
+  </div>
+
+  <!-- 2. 메인 앱 컨테이너 -->
+  <main class="app-container">
+    
+    <!-- 앱 헤더 -->
+    <header class="app-header">
+      <span class="logo-badge">KYONGGI UNIVERSITY AI</span>
+      <h1 class="app-title">경기인 행정 비서</h1>
+      <p class="app-subtitle">안티그래비티 감각의 매끄러운 원스톱 학사 행정 안내</p>
+    </header>
+
+    <!-- 3. 플로팅 검색/채팅 콘솔 (Core Input Capsule) -->
+    <section class="console-wrapper">
+      <div class="console-container">
+        <span class="console-icon">🔍</span>
+        <input 
+          type="text" 
+          id="search-input" 
+          class="console-input" 
+          placeholder="일상어로 질문하세요 (예: 학교 잠깐 쉬고 싶어, 장학금 정보)"
+          autocomplete="off"
+        >
+        <button type="button" id="search-submit" class="console-btn" aria-label="질문 전송">
+          🚀
+        </button>
+      </div>
+
+      <!-- 추천 버블 태그 -->
+      <div class="suggest-tags">
+        <span class="bubble-tag" data-query="학교 잠깐 쉬고 싶어">💤 학교 쉬고 싶어</span>
+        <span class="bubble-tag" data-query="돈 나오는 거 언제야?">💰 돈 나오는 거 언제야?</span>
+        <span class="bubble-tag" data-query="심리상담 일정 마감">🧠 우울하고 힘들어</span>
+        <span class="bubble-tag" data-query="전기나 소방 고장 났어">🛠️ 고장난 시설 신고</span>
+      </div>
+    </section>
+
+    <!-- D-Day 학사일정 플로팅 영역 -->
+    <section id="dday-section"></section>
+
+    <!-- 4. 결과 출력 컨테이너 (Floating Cards) -->
+    <section class="results-container" id="results-box">
+      <!-- 동적 카드 렌더링 영역 (Welcome 또는 Cards) -->
+      <div class="welcome-container">
+        <span class="welcome-emoji" aria-hidden="true">🌌</span>
+        <h2 class="welcome-title">무중력 스마트 행정 캔버스</h2>
+        <p class="welcome-body">
+          궁금한 학사 행정 질문을 편안한 일상어로 아래 입력해 보세요.<br>
+          AI가 의도를 파악하여 직통 내선 번호와 입체 교내 지도로 완벽히 이어줍니다.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 5. 3D 입체 지도 전개 서랍 (Map Overlay Drawer) -->
+  <aside class="map-overlay" id="map-overlay-modal" aria-hidden="true">
+    <div class="map-card" role="dialog" aria-labelledby="modal-map-title">
+      
+      <header class="map-header">
+        <h3 class="map-title" id="modal-map-title">진리관 1강의동 위치 안내</h3>
+        <button type="button" class="btn-close-map" id="map-close-btn" aria-label="지도 닫기">✕</button>
+      </header>
+
+      <!-- 3D 맵 드로잉 영역 -->
+      <div class="canvas-map-3d">
+        <!-- 격자 대각 보조선 (Perspective Grid) -->
+        <div class="map-grid-layer"></div>
+        <!-- 3D 좌표 핀 -->
+        <div class="map-floating-pin" id="map-pin" style="left: 50%; top: 50%;"></div>
+        <!-- 건물 하이라이트 캡슐 -->
+        <div class="map-building-highlight" id="map-highlight-label" style="left: 50%; top: 50%;">진리관 1강의동</div>
+      </div>
+
+      <!-- 위치 정보 상세 박스 -->
+      <div class="map-desc-box">
+        <div class="map-desc-label">상세 길 안내</div>
+        <p class="map-desc-text" id="map-desc-content">
+          정문을 통과해 직진 시 좌측에 위치한 대형 백색 석조 건물입니다. 1층 안쪽에 행정실이 있습니다.
+        </p>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- 데이터 및 비즈니스 로직 스크립트 연결 -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
