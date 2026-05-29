@@ -1,0 +1,802 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+/* ==========================================================================
+   1. DESIGN SYSTEM VARIABLES (디자인 토큰)
+   ========================================================================== */
+:root {
+  /* HSL 시스템을 활용한 공기 같은 굴절 컬러 및 우주적 공간 대기 */
+  --bg-dark: hsl(222, 47%, 4%);
+  --bg-gradient: radial-gradient(circle at 50% 50%, hsl(222, 40%, 10%) 0%, hsl(222, 60%, 2%) 100%);
+  
+  --glass-bg: hsla(222, 30%, 12%, 0.45);
+  --glass-bg-hover: hsla(222, 30%, 18%, 0.6);
+  --glass-border: hsla(222, 0%, 100%, 0.08);
+  --glass-border-hover: hsla(222, 100%, 80%, 0.2);
+  
+  /* 문자 색상 */
+  --text-primary: hsla(222, 100%, 100%, 0.95);
+  --text-secondary: hsla(222, 20%, 80%, 0.65);
+  --text-muted: hsla(222, 20%, 70%, 0.45);
+  
+  /* 강조 컬러 */
+  --color-accent: hsl(210, 100%, 65%);
+  --color-accent-glow: hsla(210, 100%, 65%, 0.35);
+  
+  /* 비상용 오로라 코랄 네온 */
+  --neon-emergency: hsl(354, 100%, 68%);
+  --neon-emergency-glow: hsla(354, 100%, 68%, 0.25);
+  
+  /* 무중력 물리 가감속 곡선 (Cubic-Bezier) */
+  --ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
+  
+  --font-sans: 'Outfit', 'Noto Sans KR', sans-serif;
+}
+
+/* ==========================================================================
+   2. GLOBAL SETUP & LAYOUT (기본 레이아웃 및 대기 공간)
+   ========================================================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-dark);
+  background-image: var(--bg-gradient);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* 우주적 조명 오로라 블록 (Aura Glowing Orbs) */
+.aura-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.aura-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(140px);
+  opacity: 0.22;
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+
+.aura-orb-blue {
+  top: 10%;
+  left: 15%;
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, hsl(200, 100%, 50%) 0%, transparent 70%);
+  animation: driftBlue 35s infinite alternate ease-in-out;
+}
+
+.aura-orb-purple {
+  bottom: 10%;
+  right: 15%;
+  width: 550px;
+  height: 550px;
+  background: radial-gradient(circle, hsl(270, 100%, 45%) 0%, transparent 70%);
+  animation: driftPurple 40s infinite alternate ease-in-out;
+}
+
+@keyframes driftBlue {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(120px, 80px) scale(1.15); }
+}
+
+@keyframes driftPurple {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-100px, -120px) scale(1.2); }
+}
+
+/* ==========================================================================
+   3. APP WRAPPER (메인 뷰 아키텍처)
+   ========================================================================== */
+.app-container {
+  position: relative;
+  z-index: 10;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 40px 20px 120px 20px;
+}
+
+/* 로고/헤더 플로팅 아키텍처 */
+.app-header {
+  text-align: center;
+  margin-bottom: 40px;
+  will-change: transform;
+  animation: headerFloat 4s infinite alternate ease-in-out;
+}
+
+.logo-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  background: hsla(210, 100%, 65%, 0.1);
+  border: 1px solid hsla(210, 100%, 65%, 0.3);
+  border-radius: 30px;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  color: var(--color-accent);
+  margin-bottom: 12px;
+  box-shadow: 0 4px 12px var(--color-accent-glow);
+}
+
+.app-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #ffffff 30%, hsl(210, 100%, 75%) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.app-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-top: 6px;
+}
+
+@keyframes headerFloat {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-5px); }
+}
+
+/* ==========================================================================
+   4. FLOATING CONSOLE (가벼운 검색 및 입력 캡슐)
+   ========================================================================== */
+.console-wrapper {
+  position: sticky;
+  top: 20px;
+  z-index: 100;
+  margin-bottom: 30px;
+  transition: transform 0.4s var(--ease-elastic);
+}
+
+.console-container {
+  display: flex;
+  align-items: center;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 50px;
+  padding: 6px 6px 6px 20px;
+  box-shadow: 
+    0 12px 40px 0 rgba(0, 0, 0, 0.5),
+    inset 0 1px 1px rgba(255, 255, 255, 0.05);
+  transition: all 0.4s var(--ease-smooth);
+}
+
+.console-container:focus-within {
+  border-color: var(--glass-border-hover);
+  box-shadow: 
+    0 16px 48px 0 rgba(0, 0, 0, 0.6),
+    0 0 25px 0 var(--color-accent-glow),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1);
+  transform: scale(1.01);
+}
+
+.console-icon {
+  color: var(--text-secondary);
+  margin-right: 12px;
+  font-size: 1.1rem;
+}
+
+.console-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+}
+
+.console-input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.6;
+}
+
+.console-btn {
+  background: var(--color-accent);
+  color: hsl(222, 60%, 2%);
+  border: none;
+  outline: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: all 0.3s var(--ease-elastic);
+}
+
+.console-btn:hover {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 0 15px 0 var(--color-accent);
+}
+
+/* 검색 제안 태그 (Bubble Tag Suggestions) */
+.suggest-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+  transition: opacity 0.3s ease;
+}
+
+.bubble-tag {
+  padding: 6px 14px;
+  background: hsla(0, 0%, 100%, 0.03);
+  border: 1px solid hsla(0, 0%, 100%, 0.05);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.3s var(--ease-elastic);
+}
+
+.bubble-tag:hover {
+  background: hsla(210, 100%, 65%, 0.1);
+  border-color: hsla(210, 100%, 65%, 0.3);
+  color: var(--text-primary);
+  transform: translateY(-3px) scale(1.05);
+}
+
+/* ==========================================================================
+   5. DEPT CARDS CONTAINER (무중력 부유 카드들)
+   ========================================================================== */
+.results-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.floating-card {
+  position: relative;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 24px;
+  padding: 24px;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 
+    0 10px 30px 0 rgba(0, 0, 0, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.03);
+  transition: 
+    transform 0.4s var(--ease-elastic),
+    box-shadow 0.4s var(--ease-smooth),
+    border-color 0.3s ease;
+  will-change: transform, box-shadow;
+}
+
+/* 0G 둥둥 표류 효과 */
+.floating-card:nth-child(odd) {
+  animation: aeroFloatOdd 6s infinite alternate ease-in-out;
+}
+
+.floating-card:nth-child(even) {
+  animation: aeroFloatEven 7.5s infinite alternate ease-in-out;
+}
+
+@keyframes aeroFloatOdd {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-5px); }
+}
+
+@keyframes aeroFloatEven {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-6px); }
+}
+
+.floating-card:hover {
+  animation-play-state: paused;
+  transform: translateY(-8px) scale(1.015);
+  border-color: var(--glass-border-hover);
+  box-shadow: 
+    0 24px 48px 0 rgba(0, 0, 0, 0.45),
+    0 0 20px 0 var(--color-accent-glow),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1);
+}
+
+/* 비상 카드 네온 펄스 레이어 (Emergency Center Only) */
+.floating-card[data-emergency="true"] {
+  animation-name: aeroFloatOdd;
+  border-color: hsla(354, 100%, 68%, 0.25);
+  background: linear-gradient(135deg, hsla(354, 100%, 68%, 0.05) 0%, var(--glass-bg) 100%);
+  box-shadow: 0 10px 30px 0 rgba(255, 107, 107, 0.1);
+}
+
+.floating-card[data-emergency="true"]:hover {
+  border-color: var(--neon-emergency);
+  box-shadow: 
+    0 24px 48px 0 rgba(255, 107, 107, 0.25),
+    inset 0 1px 2px rgba(255, 107, 107, 0.2);
+}
+
+/* 기본 노출 부서 헤더 */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0;
+}
+
+.card-title-group {
+  flex: 1;
+}
+
+.dept-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  background: hsla(0, 0%, 100%, 0.04);
+  border: 1px solid hsla(0, 0%, 100%, 0.08);
+  color: var(--text-secondary);
+}
+
+.floating-card[data-emergency="true"] .dept-badge {
+  background: hsla(354, 100%, 68%, 0.15);
+  border-color: hsla(354, 100%, 68%, 0.4);
+  color: var(--neon-emergency);
+}
+
+.dept-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.dept-loc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.dept-call-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  background: hsla(0, 0%, 100%, 0.04);
+  border: 1px solid hsla(0, 0%, 100%, 0.08);
+  border-radius: 30px;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s var(--ease-elastic);
+}
+
+.dept-call-link:hover {
+  background: hsla(210, 100%, 65%, 0.15);
+  border-color: var(--color-accent);
+  transform: scale(1.05);
+}
+
+.floating-card[data-emergency="true"] .dept-call-link:hover {
+  background: hsla(354, 100%, 68%, 0.2);
+  border-color: var(--neon-emergency);
+}
+
+/* ==========================================================================
+   6. STITCH-FLOW HEIGHT EXPANSION (그리드 로우 서랍 기술)
+   ========================================================================== */
+.card-drawer {
+  display: grid;
+  grid-template-rows: 0fr; /* 접혀있을 때 */
+  transition: grid-template-rows 0.45s var(--ease-smooth);
+}
+
+.floating-card.active .card-drawer {
+  grid-template-rows: 1fr; /* 스르륵 팽창 */
+}
+
+.drawer-inner {
+  overflow: hidden;
+  transition: opacity 0.4s ease;
+  opacity: 0;
+}
+
+.floating-card.active .drawer-inner {
+  opacity: 1;
+}
+
+.card-divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, hsla(0, 0%, 100%, 0.12) 0%, transparent 100%);
+  margin: 16px 0;
+}
+
+.drawer-title {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+/* 주요업무 불릿 */
+.task-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.task-list li {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  position: relative;
+  padding-left: 14px;
+}
+
+.task-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+/* 내선 정보 그리드 */
+.staff-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.staff-row {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  background: hsla(0, 0%, 100%, 0.02);
+  border: 1px solid hsla(0, 0%, 100%, 0.04);
+  border-radius: 12px;
+  justify-content: space-between;
+}
+
+.staff-role {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: hsla(210, 100%, 65%, 0.08);
+  padding: 2px 8px;
+  border-radius: 8px;
+}
+
+.staff-duty {
+  flex: 1;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  margin-left: 12px;
+  margin-right: 12px;
+}
+
+.staff-ext-btn {
+  font-size: 0.8rem;
+  color: var(--color-accent);
+  text-decoration: none;
+  background: hsla(210, 100%, 65%, 0.06);
+  border: 1px solid hsla(210, 100%, 65%, 0.12);
+  padding: 4px 10px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.staff-ext-btn:hover {
+  background: var(--color-accent);
+  color: hsl(222, 60%, 2%);
+  box-shadow: 0 0 10px var(--color-accent-glow);
+}
+
+/* 3D 맵 전개 버튼 */
+.btn-map-reveal {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 14px;
+  font-size: 0.85rem;
+  color: var(--color-accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-map-reveal:hover {
+  transform: translateX(4px);
+  text-shadow: 0 0 5px var(--color-accent);
+}
+
+/* ==========================================================================
+   7. FLOATING TOAST CAP (마감 D-Day 날짜 풍선)
+   ========================================================================== */
+.dday-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, hsla(354, 100%, 68%, 0.12) 0%, hsla(210, 100%, 65%, 0.05) 100%);
+  border: 1px solid hsla(354, 100%, 68%, 0.25);
+  border-radius: 20px;
+  padding: 12px 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  animation: toastFloat 5s infinite alternate ease-in-out;
+}
+
+.dday-badge {
+  background: var(--neon-emergency);
+  color: white;
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.dday-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  flex: 1;
+}
+
+.dday-date {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+@keyframes toastFloat {
+  0% { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-4px) scale(1.01); }
+}
+
+/* ==========================================================================
+   8. 3D MAP OVERLAY DRAWER (3D 아크릴 맵 모달)
+   ========================================================================== */
+.map-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: hsla(222, 60%, 2%, 0.7);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s var(--ease-smooth);
+}
+
+.map-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.map-card {
+  width: 90%;
+  max-width: 500px;
+  background: hsla(222, 40%, 15%, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 32px;
+  padding: 30px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+  transform: translateY(30px) scale(0.95);
+  transition: transform 0.4s var(--ease-elastic);
+  position: relative;
+}
+
+.map-overlay.active .map-card {
+  transform: translateY(0) scale(1);
+}
+
+.map-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.map-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.btn-close-map {
+  background: hsla(0, 0%, 100%, 0.05);
+  border: 1px solid hsla(0, 0%, 100%, 0.1);
+  color: var(--text-primary);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.btn-close-map:hover {
+  background: hsla(0, 0%, 100%, 0.15);
+  transform: scale(1.05);
+}
+
+/* 3D 캔버스 지도 영역 */
+.canvas-map-3d {
+  width: 100%;
+  height: 250px;
+  background: hsla(222, 40%, 10%, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+/* 격자 대각 보조선 (Perspective Grid) */
+.map-grid-layer {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 30px 30px;
+  transform: perspective(400px) rotateX(60deg) rotateZ(-30deg);
+  pointer-events: none;
+}
+
+/* 플로팅 3D 좌표 핀 */
+.map-floating-pin {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: var(--color-accent);
+  border-radius: 50%;
+  box-shadow: 0 0 20px var(--color-accent);
+  transform: translate(-50%, -50%);
+  animation: pinPulse 2s infinite ease-in-out;
+  transition: left 0.5s ease, top 0.5s ease;
+}
+
+.map-floating-pin::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--color-accent);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: pinRadar 2s infinite linear;
+}
+
+@keyframes pinPulse {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+  50% { transform: translate(-50%, -50%) translateY(-10px); }
+}
+
+@keyframes pinRadar {
+  0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1.8); opacity: 0; }
+}
+
+.map-building-highlight {
+  position: absolute;
+  padding: 8px 14px;
+  background: hsla(210, 100%, 65%, 0.15);
+  border: 1px solid var(--color-accent);
+  border-radius: 12px;
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  transform: translate(-50%, -100%);
+  margin-top: -24px;
+  pointer-events: none;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  transition: left 0.5s ease, top 0.5s ease;
+}
+
+.map-desc-box {
+  background: hsla(0, 0%, 100%, 0.03);
+  border: 1px solid hsla(0, 0%, 100%, 0.05);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.map-desc-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.map-desc-text {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+/* ==========================================================================
+   9. UTILITIES & STATS (웰컴 및 미검색 상태 화면)
+   ========================================================================== */
+.welcome-container {
+  text-align: center;
+  padding: 60px 20px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 32px;
+  backdrop-filter: blur(12px);
+}
+
+.welcome-emoji {
+  font-size: 2.8rem;
+  margin-bottom: 16px;
+  animation: emojiWave 3s infinite alternate ease-in-out;
+  display: inline-block;
+}
+
+.welcome-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.welcome-body {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+@keyframes emojiWave {
+  0% { transform: rotate(0deg) translateY(0); }
+  50% { transform: rotate(10deg); }
+  100% { transform: rotate(-5deg) translateY(-4px); }
+}
+
+/* ==========================================================================
+   10. MOBILE RESPONSIVENESS
+   ========================================================================== */
+@media (max-width: 580px) {
+  .app-title { font-size: 1.8rem; }
+  .floating-card { padding: 18px; }
+  .staff-row { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .staff-ext-btn { align-self: flex-end; }
+  .app-container { padding-top: 20px; }
+}
